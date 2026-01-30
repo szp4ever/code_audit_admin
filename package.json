@@ -122,6 +122,9 @@
   "dependencies": {
     "art-template": "^4.13.4",
     "axios": "^1.10.0",
+    "pinia": "catalog:",
+    "vxe-table": "^4.17.46",
+    "xe-utils": "^4.0.0",
     "yargs": "^18.0.0"
   }
 }
