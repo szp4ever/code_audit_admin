@@ -45,3 +45,38 @@ export interface TaskDurationStatItem {
  */
 export type TaskDurationStats = TaskDurationStatItem[];
 
+/**
+ * 月度任务量统计项
+ */
+export interface TaskMonthlyCountItem {
+  month: string; // 年月，如 "2024-01"
+  count: number; // 该月任务数量
+  type: string;
+}
+
+/**
+ * 月度任务量统计结果
+ */
+export type TaskMonthlyCount  = TaskMonthlyCountItem[];
+
+/**
+ * 季度统计项
+ */
+export interface TaskQuarterlyStatsItem {
+  quarter: string; // 季度标识，如 "Q1"
+  total: number; // 该季度总任务量
+  success: number; // 该季度成功任务数
+  fail: number; // 该季度失败任务数
+  successRate: number; // 该季度成功率（小数形式，如 0.8 对应 80%）
+  failRate: number; // 该季度失败率（小数形式，如 0.2 对应 20%）
+}
+export type TaskQuarterlyStats = TaskQuarterlyStatsItem[];
+/**
+ * 实时任务统计
+ */
+export interface RealTimeTaskCount {
+  inProgressCount: number;
+  pendingCount: number;
+  completeCount: number;
+}
+

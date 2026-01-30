@@ -22,6 +22,9 @@ import AnalyticsVisitsSource from './analytics-visits-source.vue';
 import TaskDurationChart from './task-duration-chart.vue';
 import TaskStatusPriorityChart from './task-status-priority-chart.vue';
 import TaskTypeChart from './task-type-chart.vue';
+import TaskMonthlyChart from './task-monthly-chart.vue';
+import TaskSeasonChart from './task-season-chart.vue';
+import TaskRealtimeStatusChart from './task-realtime-status-chart.vue';
 
 const overviewItems: AnalysisOverviewItem[] = [
   {
@@ -60,11 +63,41 @@ const chartTabs: TabOption[] = [
     value: 'trends',
   },
 ];
+const chartTabList: TabOption[] = [
+  {
+    label: '月度统计',
+    value: 'month',
+  },
+  {
+    label: '季度统计',
+    value: 'season',
+  },
+  {
+    label: '年度统计',
+    value: 'year',
+  },
+];
 </script>
 
 <template>
   <div class="p-5">
 <!--    <AnalysisOverview :items="overviewItems" />-->
+    <AnalysisChartsTabs :tabs="chartTabList" class="mt-5">
+      <template #month>
+        <TaskMonthlyChart />
+      </template>
+      <template #season>
+        <TaskSeasonChart />
+      </template>
+      <template #year>
+        3
+      </template>
+    </AnalysisChartsTabs>
+    <div class="">
+      <AnalysisChartCard class="mt-5" title="任务实时状态">
+        <TaskRealtimeStatusChart />
+      </AnalysisChartCard>
+    </div>
     <AnalysisChartsTabs :tabs="chartTabs" class="mt-5">
       <template #trends>
         <TaskDurationChart />
@@ -79,5 +112,6 @@ const chartTabs: TabOption[] = [
         <TaskTypeChart />
       </AnalysisChartCard>
     </div>
+
   </div>
 </template>
