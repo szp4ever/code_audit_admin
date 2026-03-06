@@ -3,7 +3,7 @@ import type {
   TaskStatusStats,
   TaskTypeStats,
   TaskMonthlyCount,
-  TaskQuarterlyStats, RealTimeTaskCount
+  TaskQuarterlyStats, RealTimeTaskCount, TaskYearlyCount
 } from './model';
 
 import { requestClient } from '#/api/request';
@@ -13,6 +13,7 @@ enum Api {
   statsType = '/taskmanagement/stats/type',
   statsDuration = '/taskmanagement/stats/duration',
   monthlyCount = '/taskmanagement/monthlycount',
+  yearlyCount = '/taskmanagement/yearlycount',
   statsQuarterly = '/taskmanagement/stats/quarterly',
   realtimeCount = '/taskmanagement/realtime_count',
 }
@@ -49,6 +50,12 @@ export function getTaskDurationStats(timeRange?: 'day' | 'hour' | 'week') {
  */
 export function getMonthlyTaskCount(params: { start: string; end: string }) {
   return requestClient.get<TaskMonthlyCount>(Api.monthlyCount, { params });
+}
+/**
+ * 获取年度任务量统计
+ */
+export function getYearlyTaskCount(params: { start: string; end: string }) {
+  return requestClient.get<TaskYearlyCount>(Api.yearlyCount, { params });
 }
 
 

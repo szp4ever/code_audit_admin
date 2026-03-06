@@ -23,6 +23,7 @@ import TaskDurationChart from './task-duration-chart.vue';
 import TaskStatusPriorityChart from './task-status-priority-chart.vue';
 import TaskTypeChart from './task-type-chart.vue';
 import TaskMonthlyChart from './task-monthly-chart.vue';
+import TaskYearlyChart from './task-yearly-chart.vue';
 import TaskSeasonChart from './task-season-chart.vue';
 import TaskRealtimeStatusChart from './task-realtime-status-chart.vue';
 
@@ -90,7 +91,7 @@ const chartTabList: TabOption[] = [
         <TaskSeasonChart />
       </template>
       <template #year>
-        3
+        <TaskYearlyChart />
       </template>
     </AnalysisChartsTabs>
     <div class="">

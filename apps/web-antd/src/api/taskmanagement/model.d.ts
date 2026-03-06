@@ -60,6 +60,20 @@ export interface TaskMonthlyCountItem {
 export type TaskMonthlyCount  = TaskMonthlyCountItem[];
 
 /**
+ * 年度任务量统计项（按季度）
+ */
+export interface TaskYearlyCountItem {
+  year: string; // 年份，如 "2024"
+  count: number; // 该季度任务数量
+  type: string;
+}
+
+/**
+ * 年度任务量统计结果
+ */
+export type TaskYearlyCount = TaskYearlyCountItem[];
+
+/**
  * 季度统计项
  */
 export interface TaskQuarterlyStatsItem {
