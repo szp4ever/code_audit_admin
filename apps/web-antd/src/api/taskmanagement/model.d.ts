@@ -94,3 +94,19 @@ export interface RealTimeTaskCount {
   completeCount: number;
 }
 
+/**
+ * 用户操作热力图数据项
+ * - module: 功能模块标识（如 system:user / workflow / taskmanagement）
+ * - timeSlot: 时间槽（通常为 YYYY-MM-DD）
+ * - count: 该时间槽内的操作次数
+ */
+export interface UserOperationHeatmapItem {
+  module: string;
+  timeSlot: string;
+  count: number;
+}
+
+/**
+ * 用户操作热力图返回结果
+ */
+export type UserOperationHeatmap = UserOperationHeatmapItem[];

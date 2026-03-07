@@ -12,6 +12,7 @@ enum Api {
   statsStatus = '/taskmanagement/stats/status',
   statsType = '/taskmanagement/stats/type',
   statsDuration = '/taskmanagement/stats/duration',
+  userOperationHeatmap = '/taskmanagement/stats/user-operation-heatmap',
   monthlyCount = '/taskmanagement/monthlycount',
   yearlyCount = '/taskmanagement/yearlycount',
   statsQuarterly = '/taskmanagement/stats/quarterly',
@@ -73,3 +74,16 @@ export function getRealTimeTaskCount() {
   return requestClient.get<RealTimeTaskCount>(Api.realtimeCount);
 }
 
+/**
+ * 获取用户操作热力图数据
+ * @param params timeRange: day|week|month（默认 week）；startDate/endDate: YYYY-MM-DD
+ */
+export function getUserOperationHeatmap(params?: {
+  timeRange?: 'day' | 'month' | 'week';
+  startDate?: string;
+  endDate?: string;
+}) {
+  return requestClient.get<import('./model').UserOperationHeatmap>(Api.userOperationHeatmap, {
+    params,
+  });
+}
