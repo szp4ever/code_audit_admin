@@ -5,6 +5,7 @@ import type { DescItem } from '#/components/description';
 import { DictEnum } from '@vben/constants';
 
 import { Tag } from 'ant-design-vue';
+import dayjs from 'dayjs';
 
 import { getDictOptions } from '#/utils/dict';
 import {
@@ -13,7 +14,85 @@ import {
   renderJsonPreview,
 } from '#/utils/render';
 
+import { createKeywordHistory } from '../keyword-history';
+
+/**
+ * 行内关键字字段名
+ */
+const HIGHLIGHT_KEY_PROP = '__keyword';
+
+/**
+ * 关键字搜索历史（仅当前页面使用）
+ */
+const OPERLOG_KEYWORD_HISTORY_KEY = 'monitor:operlog:keywordHistory';
+const operlogKeywordHistory = createKeywordHistory(OPERLOG_KEYWORD_HISTORY_KEY);
+
+function getRowKeyword(row: Record<string, any>): string {
+  return (row?.[HIGHLIGHT_KEY_PROP] as string) || '';
+}
+
+/**
+ * 文本高亮渲染
+ * @param text 单元格原始文本
+ * @param row 当前行数据（包含关键字）
+ */
+function renderHighlightText(text: unknown, row: Record<string, any>) {
+  const value = text == null ? '' : String(text);
+  const keyword = getRowKeyword(row).trim();
+
+  if (!keyword) return value;
+
+  const lowerText = value.toLowerCase();
+  const lowerKeyword = keyword.toLowerCase();
+
+  if (!lowerText.includes(lowerKeyword)) {
+    return value;
+  }
+
+  const nodes: (string | JSX.Element)[] = [];
+  let start = 0;
+
+  while (true) {
+    const index = lowerText.indexOf(lowerKeyword, start);
+    if (index === -1) {
+      if (start < value.length) {
+        nodes.push(value.slice(start));
+      }
+      break;
+    }
+
+    if (index > start) {
+      nodes.push(value.slice(start, index));
+    }
+
+    const match = value.slice(index, index + keyword.length);
+    nodes.push(
+      <span class="bg-yellow-200 text-red-600 dark:bg-yellow-700/60">
+        {match}
+      </span>,
+    );
+
+    start = index + keyword.length;
+  }
+
+  return nodes;
+}
+
 export const querySchema: FormSchemaGetter = () => [
+  {
+    component: 'AutoComplete',
+    fieldName: 'keyword',
+    label: '关键字',
+    componentProps: {
+      placeholder: '支持系统模块、操作人员、IP地址等模糊搜索',
+      allowClear: true,
+      // 聚焦时同步一次本地历史，点击输入框即可看到历史记录
+      options: operlogKeywordHistory.options,
+      onFocus() {
+        operlogKeywordHistory.syncFromStorage();
+      },
+    },
+  },
   {
     component: 'Input',
     fieldName: 'title',
@@ -57,7 +136,13 @@ export const querySchema: FormSchemaGetter = () => [
 
 export const columns: VxeGridProps['columns'] = [
   { type: 'checkbox', width: 60 },
-  { field: 'title', title: '系统模块' },
+  {
+    field: 'title',
+    title: '系统模块',
+    slots: {
+      default: ({ row }) => renderHighlightText(row.title, row),
+    },
+  },
   {
     title: '操作类型',
     field: 'businessType',
@@ -67,9 +152,27 @@ export const columns: VxeGridProps['columns'] = [
       },
     },
   },
-  { field: 'operName', title: '操作人员' },
-  { field: 'operIp', title: 'IP地址' },
-  { field: 'operLocation', title: 'IP信息' },
+  {
+    field: 'operName',
+    title: '操作人员',
+    slots: {
+      default: ({ row }) => renderHighlightText(row.operName, row),
+    },
+  },
+  {
+    field: 'operIp',
+    title: 'IP地址',
+    slots: {
+      default: ({ row }) => renderHighlightText(row.operIp, row),
+    },
+  },
+  {
+    field: 'operLocation',
+    title: 'IP信息',
+    slots: {
+      default: ({ row }) => renderHighlightText(row.operLocation, row),
+    },
+  },
   {
     field: 'status',
     title: '操作状态',
@@ -79,7 +182,19 @@ export const columns: VxeGridProps['columns'] = [
       },
     },
   },
-  { field: 'operTime', title: '操作日期', sortable: true },
+  {
+    field: 'operTime',
+    title: '操作日期',
+    sortable: true,
+    slots: {
+      default: ({ row }) => {
+        const value = row.operTime;
+        if (!value) return '';
+        const formatted = dayjs(value).format('YYYY-MM-DD HH:mm:ss');
+        return renderHighlightText(formatted, row);
+      },
+    },
+  },
   {
     field: 'costTime',
     title: '操作耗时',
@@ -195,5 +310,9 @@ export const descSchema: DescItem[] = [
   {
     field: 'operTime',
     label: '操作时间',
+    render(value) {
+      if (!value) return '';
+      return dayjs(value).format('YYYY-MM-DD HH:mm:ss');
+    },
   },
 ];

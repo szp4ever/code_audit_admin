@@ -3,6 +3,7 @@ import type { VxeGridProps } from '#/adapter/vxe-table';
 
 import { DictEnum } from '@vben/constants';
 import { getPopupContainer } from '@vben/utils';
+import dayjs from 'dayjs';
 
 import { z } from '#/adapter/form';
 import { getDictOptions } from '#/utils/dict';
@@ -53,10 +54,24 @@ export const columns: VxeGridProps['columns'] = [
   {
     field: 'createTime',
     title: '创建时间',
+    slots: {
+      default: ({ row }) => {
+        const value = row.createTime;
+        if (!value) return '';
+        return dayjs(value).format('YYYY-MM-DD HH:mm:ss');
+      },
+    },
   },
   {
     field: 'loginDate',
     title: '最后登录时间',
+    slots: {
+      default: ({ row }) => {
+        const value = row.loginDate;
+        if (!value) return '';
+        return dayjs(value).format('YYYY-MM-DD HH:mm:ss');
+      },
+    },
   },
   {
     field: 'status',

@@ -5,6 +5,7 @@ import { DictEnum } from '@vben/constants';
 import { getPopupContainer } from '@vben/utils';
 
 import { Tag } from 'ant-design-vue';
+import dayjs from 'dayjs';
 
 import { getDictOptions } from '#/utils/dict';
 
@@ -88,6 +89,13 @@ export const columns: VxeGridProps['columns'] = [
   {
     title: '创建时间',
     field: 'createTime',
+    slots: {
+      default: ({ row }) => {
+        const value = row.createTime;
+        if (!value) return '';
+        return dayjs(value).format('YYYY-MM-DD HH:mm:ss');
+      },
+    },
   },
   {
     field: 'action',
