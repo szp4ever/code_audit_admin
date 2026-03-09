@@ -15,6 +15,7 @@ import type { ComposeOption } from 'echarts/core';
 import {
   BarChart,
   GaugeChart,
+  HeatmapChart,
   LineChart,
   MapChart,
   PieChart,
@@ -63,6 +64,7 @@ echarts.use([
   LegendComponent,
   ToolboxComponent,
   GaugeChart,
+  HeatmapChart,
   VisualMapComponent,
   MapChart,
 ]);

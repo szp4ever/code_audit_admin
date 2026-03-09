@@ -155,9 +155,10 @@ export function renderDictTags(
  * @param dictName dictName
  * @returns tag
  */
-export function renderDict(value: string, dictName: string) {
+export function renderDict(value: string | number, dictName: string) {
   const dictInfo = getDictOptions(dictName);
-  return renderDictTag(value, dictInfo);
+  // 确保值转换为字符串，以便与字典值匹配
+  return renderDictTag(String(value), dictInfo);
 }
 export function renderIconSpan(
   icon: ComponentType,

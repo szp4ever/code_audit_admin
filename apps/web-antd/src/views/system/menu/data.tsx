@@ -7,6 +7,7 @@ import { DictEnum } from '@vben/constants';
 import { FolderIcon, MenuIcon, OkButtonIcon, VbenIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
 import { getPopupContainer } from '@vben/utils';
+import dayjs from 'dayjs';
 
 import { z } from '#/adapter/form';
 import { getDictOptions } from '#/utils/dict';
@@ -139,6 +140,13 @@ export const columns: VxeGridProps['columns'] = [
   {
     title: '创建时间',
     field: 'createTime',
+    slots: {
+      default: ({ row }) => {
+        const value = row.createTime;
+        if (!value) return '';
+        return dayjs(value).format('YYYY-MM-DD HH:mm:ss');
+      },
+    },
   },
   {
     field: 'action',

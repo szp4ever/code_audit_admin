@@ -28,6 +28,9 @@ import StanardPassChart from './stanard-pass-chart.vue';
 import TaskSeasonChart from './task-season-chart.vue';
 import TaskRealtimeStatusChart from './task-realtime-status-chart.vue';
 import OverallScoreChart from './overall-score-chart.vue';
+import UserOperationHeatmap from './user-operation-heatmap.vue';
+import FunctionUsageRanking from './function-usage-ranking.vue';
+
 const overviewItems: AnalysisOverviewItem[] = [
   {
     icon: SvgCardIcon,
@@ -137,6 +140,15 @@ const qualityTabList: TabOption[] = [
       </AnalysisChartCard>
       <AnalysisChartCard class="mt-5 md:mt-0 md:w-1/2" title="任务类型统计">
         <TaskTypeChart />
+      </AnalysisChartCard>
+    </div>
+
+    <div class="mt-5 w-full md:flex">
+      <AnalysisChartCard class="mt-5 md:mr-4 md:mt-0 md:w-2/3" title="用户操作热力图">
+        <UserOperationHeatmap />
+      </AnalysisChartCard>
+      <AnalysisChartCard class="mt-5 md:mt-0 md:w-1/3" title="功能使用统计排行">
+        <FunctionUsageRanking />
       </AnalysisChartCard>
     </div>
 

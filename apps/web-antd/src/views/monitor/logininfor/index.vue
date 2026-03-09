@@ -24,6 +24,11 @@ import { confirmDeleteModal } from '#/utils/modal';
 
 import { columns, querySchema } from './data';
 import loginInfoModal from './login-info-modal.vue';
+import { createKeywordHistory } from '../keyword-history';
+
+const logininfoKeywordHistory = createKeywordHistory(
+  'monitor:logininfor:keywordHistory',
+);
 
 const formOptions: VbenFormProps = {
   commonConfig: {
@@ -60,11 +65,53 @@ const gridOptions: VxeGridProps = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues = {}) => {
-        return await loginInfoList({
+        const { keyword, ...restForm } = formValues as any;
+        const result = await loginInfoList({
           pageNum: page.currentPage,
           pageSize: page.pageSize,
-          ...formValues,
+          ...restForm,
         });
+
+        const k = (keyword as string | undefined)?.trim();
+        if (!k) {
+          return result;
+        }
+
+        // 写入搜索历史
+        logininfoKeywordHistory.add(k);
+
+        const lowerKeyword = k.toLowerCase();
+
+        const rows = result.rows
+          .map((row) => ({
+            ...row,
+            __keyword: k,
+          }))
+          .filter((row) => {
+            const candidates: Array<unknown> = [
+              row.userName,
+              row.clientKey,
+              row.ipaddr,
+              row.loginLocation,
+              row.browser,
+              row.os,
+              row.msg,
+              row.status,
+              row.loginTime,
+            ];
+
+            return candidates.some((item) => {
+              if (item == null) return false;
+              const text = String(item);
+              return text.toLowerCase().includes(lowerKeyword);
+            });
+          });
+
+        return {
+          ...result,
+          rows,
+          total: rows.length,
+        };
       },
     },
   },

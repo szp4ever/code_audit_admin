@@ -26,6 +26,9 @@ import { confirmDeleteModal } from '#/utils/modal';
 
 import { columns, querySchema } from './data';
 import operationPreviewDrawer from './operation-preview-drawer.vue';
+import { createKeywordHistory } from '../keyword-history';
+
+const operlogKeywordHistory = createKeywordHistory('monitor:operlog:keywordHistory');
 
 const formOptions: VbenFormProps = {
   commonConfig: {
@@ -62,14 +65,58 @@ const gridOptions: VxeGridProps<OperationLog> = {
   proxyConfig: {
     ajax: {
       query: async ({ page, sorts }, formValues = {}) => {
+        const { keyword, ...restForm } = formValues as any;
         const params: PageQuery = {
           pageNum: page.currentPage,
           pageSize: page.pageSize,
-          ...formValues,
+          ...restForm,
         };
         // 添加排序参数
         addSortParams(params, sorts);
-        return await operLogList(params);
+        const result = await operLogList(params);
+
+        const k = (keyword as string | undefined)?.trim();
+        if (!k) {
+          return result;
+        }
+
+        // 写入搜索历史
+        operlogKeywordHistory.add(k);
+
+        const lowerKeyword = k.toLowerCase();
+
+        const rows = result.rows
+          .map((row) => ({
+            ...row,
+            __keyword: k,
+          }))
+          .filter((row) => {
+            const candidates: Array<unknown> = [
+              row.title,
+              row.operName,
+              row.operIp,
+              row.operLocation,
+              row.operUrl,
+              row.method,
+              row.deptName,
+              row.errorMsg,
+              row.status,
+              row.costTime,
+              row.operTime,
+            ];
+
+            return candidates.some((item) => {
+              if (item == null) return false;
+              const text = String(item);
+              return text.toLowerCase().includes(lowerKeyword);
+            });
+          });
+
+        return {
+          ...result,
+          rows,
+          total: rows.length,
+        };
       },
     },
   },
