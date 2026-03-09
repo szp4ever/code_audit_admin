@@ -3,7 +3,8 @@ import type {
   TaskStatusStats,
   TaskTypeStats,
   TaskMonthlyCount,
-  TaskQuarterlyStats, RealTimeTaskCount, TaskYearlyCount
+  TaskQuarterlyStats, RealTimeTaskCount, TaskYearlyCount, CodeStandardPassRate, MonthlyCodeQuality,
+  YearlyCodeQuality
 } from './model';
 
 import { requestClient } from '#/api/request';
@@ -16,6 +17,9 @@ enum Api {
   yearlyCount = '/taskmanagement/yearlycount',
   statsQuarterly = '/taskmanagement/stats/quarterly',
   realtimeCount = '/taskmanagement/realtime_count',
+  codeStandardPassRate = '/taskmanagement/code_standard_pass_rate',
+  monthlyCodeQuality = '/taskmanagement/monthly_code_Quality',
+  yearlyCodeQuality = '/taskmanagement/yearly_code_Quality',
 }
 
 /**
@@ -72,4 +76,33 @@ export function getQuarterlyTaskStats(params: { year: string }) {
 export function getRealTimeTaskCount() {
   return requestClient.get<RealTimeTaskCount>(Api.realtimeCount);
 }
+
+/**
+ * 获取代码规范检查通过率统计
+ * @param params - 查询参数（开始年月/结束年月，格式：YYYY-MM）
+ * @returns 代码规范检查通过/未通过数量统计
+ */
+export function getCodeStandardPassRate(params: { start: string; end: string }) {
+  return requestClient.get<CodeStandardPassRate>(Api.codeStandardPassRate, { params });
+}
+
+/**
+ * 获取月度代码质量综合评分统计
+ * @param params - 查询参数（开始年月/结束年月，格式：YYYY-MM）
+ * @returns 月度代码质量综合评分列表
+ */
+export function getMonthlyCodeQuality(params: { start: string; end: string }) {
+  return requestClient.get<MonthlyCodeQuality[]>(Api.monthlyCodeQuality, { params });
+}
+
+/**
+ * 获取年度代码质量综合评分统计
+ * @param params - 查询参数（开始年份/结束年份，格式：YYYY）
+ * @returns 年度代码质量综合评分列表
+ */
+export function getYearlyCodeQuality(params: { start: string; end: string }) {
+  return requestClient.get<YearlyCodeQuality[]>(Api.yearlyCodeQuality, { params });
+}
+
+
 

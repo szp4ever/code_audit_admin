@@ -24,9 +24,10 @@ import TaskStatusPriorityChart from './task-status-priority-chart.vue';
 import TaskTypeChart from './task-type-chart.vue';
 import TaskMonthlyChart from './task-monthly-chart.vue';
 import TaskYearlyChart from './task-yearly-chart.vue';
+import StanardPassChart from './stanard-pass-chart.vue';
 import TaskSeasonChart from './task-season-chart.vue';
 import TaskRealtimeStatusChart from './task-realtime-status-chart.vue';
-
+import OverallScoreChart from './overall-score-chart.vue';
 const overviewItems: AnalysisOverviewItem[] = [
   {
     icon: SvgCardIcon,
@@ -78,11 +79,36 @@ const chartTabList: TabOption[] = [
     value: 'year',
   },
 ];
+const qualityTabList: TabOption[] = [
+  {
+    label: '代码质量评分趋势',
+    value: 'score',
+  },
+  {
+    label: '漏洞修复效率统计',
+    value: 'loudong',
+  },
+  {
+    label: '代码规范遵循度分析',
+    value: 'standard',
+  },
+];
 </script>
 
 <template>
   <div class="p-5">
 <!--    <AnalysisOverview :items="overviewItems" />-->
+    <AnalysisChartsTabs :tabs="qualityTabList" class="mt-5">
+      <template #score>
+        <OverallScoreChart/>
+      </template>
+      <template #loudong >
+        2
+      </template>
+      <template #standard>
+        <StanardPassChart/>
+      </template>
+    </AnalysisChartsTabs>
     <AnalysisChartsTabs :tabs="chartTabList" class="mt-5">
       <template #month>
         <TaskMonthlyChart />

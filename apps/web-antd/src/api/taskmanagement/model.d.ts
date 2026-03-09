@@ -94,3 +94,24 @@ export interface RealTimeTaskCount {
   completeCount: number;
 }
 
+// 配套的类型定义（建议放在同目录的types.ts或当前文件中）
+export interface CodeStandardPassRate {
+  passed: number; // 通过的代码规范检查数量
+  failed: number; // 未通过的代码规范检查数量
+}
+
+// 配套的类型定义（需和接口返回数据结构对应）
+export interface MonthlyCodeQuality {
+  /** 月份，格式：YYYY-MM */
+  month: string;
+  /** 代码质量综合评分，范围：0-100 */
+  overallScore: number;
+}
+
+export interface YearlyCodeQuality {
+  /** 年份，格式：YYYY */
+  year: string;
+  /** 代码质量综合评分，范围：0-100 */
+  overallScore: number;
+}
+
