@@ -131,3 +131,51 @@ export interface UserOperationHeatmapItem {
  * 用户操作热力图返回结果
  */
 export type UserOperationHeatmap = UserOperationHeatmapItem[];
+
+/**
+ * 活跃用户分布数据项
+ */
+export interface ActiveUserDistributionItem {
+  timeSlot: string; // 时间段，如 "0-2点"
+  count: number; // 用户数量
+}
+
+/**
+ * 活跃用户分布返回结果
+ */
+export type ActiveUserDistribution = ActiveUserDistributionItem[];
+
+/**
+ * 峰值时段分析数据项
+ */
+export interface PeakTimeAnalysisItem {
+  hour: string; // 小时，如 "0", "2", "4" 等
+  count: number; // 用户数量
+}
+
+/**
+ * 峰值时段分析返回结果
+ */
+export type PeakTimeAnalysis = PeakTimeAnalysisItem[];
+
+/**
+ * 在线用户数量返回结果
+ */
+export interface OnlineUserCount {
+  count: number; // 当前在线用户数量
+}
+
+/**
+ * 系统负载数据项
+ */
+export interface SystemLoadItem {
+  timestamp: string; // 时间戳
+  cpuUsage: number; // CPU使用率（百分比）
+  memoryUsage: number; // 内存使用率（百分比）
+  gpuUsage?: number; // GPU使用率（百分比，可选）
+}
+
+/**
+ * 系统负载返回结果
+ */
+export type SystemLoad = SystemLoadItem[];

@@ -30,6 +30,8 @@ import TaskRealtimeStatusChart from './task-realtime-status-chart.vue';
 import OverallScoreChart from './overall-score-chart.vue';
 import UserOperationHeatmap from './user-operation-heatmap.vue';
 import FunctionUsageRanking from './function-usage-ranking.vue';
+import OnlineUserActivity from './online-user-activity.vue';
+import SystemLoadMonitor from './system-load-monitor.vue';
 
 const overviewItems: AnalysisOverviewItem[] = [
   {
@@ -101,6 +103,18 @@ const qualityTabList: TabOption[] = [
 <template>
   <div class="p-5">
 <!--    <AnalysisOverview :items="overviewItems" />-->
+        <AnalysisChartsTabs :tabs="chartTabList" class="mt-5">
+      <template #month>
+        <TaskMonthlyChart />
+      </template>
+      <template #season>
+        <TaskSeasonChart />
+      </template>
+      <template #year>
+        <TaskYearlyChart />
+      </template>
+    </AnalysisChartsTabs>
+    
     <AnalysisChartsTabs :tabs="qualityTabList" class="mt-5">
       <template #score>
         <OverallScoreChart/>
@@ -112,17 +126,8 @@ const qualityTabList: TabOption[] = [
         <StanardPassChart/>
       </template>
     </AnalysisChartsTabs>
-    <AnalysisChartsTabs :tabs="chartTabList" class="mt-5">
-      <template #month>
-        <TaskMonthlyChart />
-      </template>
-      <template #season>
-        <TaskSeasonChart />
-      </template>
-      <template #year>
-        <TaskYearlyChart />
-      </template>
-    </AnalysisChartsTabs>
+
+
     <div class="">
       <AnalysisChartCard class="mt-5" title="任务实时状态">
         <TaskRealtimeStatusChart />
@@ -151,6 +156,14 @@ const qualityTabList: TabOption[] = [
         <FunctionUsageRanking />
       </AnalysisChartCard>
     </div>
+
+    <AnalysisChartCard class="mt-5" title="在线用户活跃度">
+      <OnlineUserActivity />
+    </AnalysisChartCard>
+
+    <AnalysisChartCard class="mt-5" title="系统负载实时监控">
+      <SystemLoadMonitor />
+    </AnalysisChartCard>
 
   </div>
 </template>

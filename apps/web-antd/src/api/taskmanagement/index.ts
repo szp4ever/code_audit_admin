@@ -4,7 +4,7 @@ import type {
   TaskTypeStats,
   TaskMonthlyCount,
   TaskQuarterlyStats, RealTimeTaskCount, TaskYearlyCount, CodeStandardPassRate, MonthlyCodeQuality,
-  YearlyCodeQuality
+  YearlyCodeQuality,ActiveUserDistribution,PeakTimeAnalysis,OnlineUserCount,SystemLoad
 } from './model';
 
 import { requestClient } from '#/api/request';
@@ -21,6 +21,10 @@ enum Api {
   codeStandardPassRate = '/taskmanagement/code_standard_pass_rate',
   monthlyCodeQuality = '/taskmanagement/monthly_code_Quality',
   yearlyCodeQuality = '/taskmanagement/yearly_code_Quality',
+  activeUserDistribution = '/taskmanagement/stats/active-user-distribution',
+  peakTimeAnalysis = '/taskmanagement/stats/peak-time-analysis',
+  onlineUserCount = '/taskmanagement/stats/online-user-count',
+  systemLoad = '/taskmanagement/stats/system-load',
 }
 
 /**
@@ -116,6 +120,41 @@ export function getMonthlyCodeQuality(params: { start: string; end: string }) {
  */
 export function getYearlyCodeQuality(params: { start: string; end: string }) {
   return requestClient.get<YearlyCodeQuality[]>(Api.yearlyCodeQuality, { params });
+}
+
+/**
+ * 获取活跃用户分布
+ * @param params - 查询参数（日期，格式：YYYY-MM-DD）
+ * @returns 活跃用户分布结果
+ */
+export function getActiveUserDistribution(params?: { date: string }) {
+  return requestClient.get<ActiveUserDistribution>(Api.activeUserDistribution, { params });
+}
+
+/**
+ * 获取峰值时段分析
+ * @param params - 查询参数（日期，格式：YYYY-MM-DD）
+ * @returns 峰值时段分析结果
+ */
+export function getPeakTimeAnalysis(params: { date: string }) {
+  return requestClient.get<PeakTimeAnalysis>(Api.peakTimeAnalysis, { params });
+}
+
+/**
+ * 获取在线用户数量
+ * @returns 在线用户数量结果
+ */
+export function getOnlineUserCount() {
+  return requestClient.get<OnlineUserCount>(Api.onlineUserCount);
+}
+
+/**
+ * 获取系统负载数据
+ * @param params - 查询参数（时间范围：1h|24h）
+ * @returns 系统负载数据结果
+ */
+export function getSystemLoad(params: { timeRange: '1h' | '24h' }) {
+  return requestClient.get<SystemLoad>(Api.systemLoad, { params });
 }
 
 
