@@ -32,6 +32,7 @@ import UserOperationHeatmap from './user-operation-heatmap.vue';
 import FunctionUsageRanking from './function-usage-ranking.vue';
 import OnlineUserActivity from './online-user-activity.vue';
 import SystemLoadMonitor from './system-load-monitor.vue';
+import VulnerabilityFixEfficiency from './vulnerability-fix-efficiency.vue';
 
 const overviewItems: AnalysisOverviewItem[] = [
   {
@@ -120,7 +121,7 @@ const qualityTabList: TabOption[] = [
         <OverallScoreChart/>
       </template>
       <template #loudong >
-        2
+        <VulnerabilityFixEfficiency/>
       </template>
       <template #standard>
         <StanardPassChart/>

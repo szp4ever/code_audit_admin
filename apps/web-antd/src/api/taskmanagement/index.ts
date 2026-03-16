@@ -4,7 +4,7 @@ import type {
   TaskTypeStats,
   TaskMonthlyCount,
   TaskQuarterlyStats, RealTimeTaskCount, TaskYearlyCount, CodeStandardPassRate, MonthlyCodeQuality,
-  YearlyCodeQuality,ActiveUserDistribution,PeakTimeAnalysis,OnlineUserCount,SystemLoad
+  YearlyCodeQuality,ActiveUserDistribution,PeakTimeAnalysis,OnlineUserCount,SystemLoad,VulnerabilityFixEfficiency
 } from './model';
 
 import { requestClient } from '#/api/request';
@@ -25,6 +25,7 @@ enum Api {
   peakTimeAnalysis = '/taskmanagement/stats/peak-time-analysis',
   onlineUserCount = '/taskmanagement/stats/online-user-count',
   systemLoad = '/taskmanagement/stats/system-load',
+  vulnerabilityFixEfficiency = '/taskmanagement/stats/vulnerability-fix-efficiency',
 }
 
 /**
@@ -155,6 +156,15 @@ export function getOnlineUserCount() {
  */
 export function getSystemLoad(params: { timeRange: '1h' | '24h' }) {
   return requestClient.get<SystemLoad>(Api.systemLoad, { params });
+}
+
+/**
+ * 获取漏洞修复效率数据
+ * @param params - 查询参数（开始日期和结束日期，格式：YYYY-MM-DD）
+ * @returns 漏洞修复效率数据结果
+ */
+export function getVulnerabilityFixEfficiency(params: { startDate: string; endDate: string }) {
+  return requestClient.get<VulnerabilityFixEfficiency>(Api.vulnerabilityFixEfficiency, { params });
 }
 
 

@@ -179,3 +179,19 @@ export interface SystemLoadItem {
  * 系统负载返回结果
  */
 export type SystemLoad = SystemLoadItem[];
+
+/**
+ * 漏洞修复效率数据项
+ */
+export interface VulnerabilityFixEfficiencyItem {
+  date: string; // 日期，格式：YYYY-MM-DD
+  critical: number; // 重危漏洞数量
+  high: number; // 高危漏洞数量
+  medium: number; // 中危漏洞数量
+  low: number; // 低危漏洞数量
+}
+
+/**
+ * 漏洞修复效率返回结果
+ */
+export type VulnerabilityFixEfficiency = VulnerabilityFixEfficiencyItem[];
